@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Agendamentos</title>
+</head>
+
+<body>
+
+    <h1>Agendamentos</h1>
+
+    <input 
+        type="text" 
+        id="campoBusca" 
+        placeholder="Buscar cliente..." 
+        onkeyup="filtrarTabela()"
+    >
+
+    <table border="1">
+
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Serviço</th>
+                <th>Valor</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+
+        <tbody id="tabelaResultados">
+        </tbody>
+
+    </table>
+
+    <p id="valorTotal"></p>
+
+    <script src="../js/listar_agendamento.js"></script>
+
+</body>
+
+</html>
