@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petshop</title>
+</head>
+<body>
+    
+<h2>Agendar banho e tosa</h2>
+
+<form onsubmit="validarAgendamento(event)">
+
+<label>Nome do pet</label>
+<input type="text" id = "agendar_pet">
+<br>
+
+<label>Serviço</label>
+    <select id="agendar_servico" onchange="atualizarPreco()">
+    <option value="Banho">Banho</option>
+    <option value="Tosa">Tosa</option>
+    <option value="Banho e tosa">Banho e tosa</option>
+    <option value="Consulta">Consulta</option>
+</select>
+<br>
+
+<textarea id="sintomas" placeholder="Sintomas do Pet"></textarea>
+<br>
+<label for = "preco">Preço estimado:</label>
+<input type="text" id="valor_servico" readonly>
+<br>
+
+<label>Data:</label>
+<input type="date" id ="agendar_data">
+<br>
+
+<label>Horário:</label>
+<input type="time" id="agendar_hora">
+<br>
+
+<label>Observações:</label>
+<textarea id="agendar_obs" rows="1" cols="20"></textarea>
+<br>
+
+  <button type="submit" onclick="confirmarAgen(event)">Confirmar agendamento</button>
+
+</form>
+
+<a href="../index.html">Voltar ao início</a>
+
+<script src="../js/agendamento.js"></script>
+
+</body>
+</html>

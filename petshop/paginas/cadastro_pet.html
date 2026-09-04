@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petshop</title>
+</head>
+
+<body>
+
+    <h2>Cadastro de novo pet</h2>
+
+    <form id = "form_cadastro_pet">
+
+        <label>Nome do pet:</label>
+        <input type="text" id ="nome_pet">
+        <br>
+
+        <label>Espécie:</label>
+        <select id="especie_pet">
+            <option value="cachorro">Cachorro</option>
+            <option value="gato">Gato</option>
+            <option value="passarinho">Passarinho</option>
+            <option value="outro">Outro</option>
+        </select>
+        <br>
+
+        <label>Raça:</label>
+        <input type="text" id ="raca_pet">
+        <br>
+
+        <label>Nome do dono:</label>
+        <input type="text" id ="dono_pet">
+        <br>
+
+        <label>Telefone:</label>
+        <input type="tel" id="telefone_dono">
+        <br>
+
+        <label>CEP:</label>
+        <input type="text" id = "cep_dono">
+        <br>
+
+        <label>Rua:</label>
+        <input type="text" id = "rua_dono">
+        <br>
+
+        <label>Bairro</label>
+        <input type="text" id = "bairro_dono">
+        <br>
+
+        
+        <label>Cidade</label>
+        <input type="text" id = "cidade_dono">
+        <br>
+
+        
+        <label>Estado</label>
+        <input type="text" id = "uf_dono">
+        <br>
+
+        
+        <select id="select_estado_dono">
+            <option>Selecione um estado</option>
+        </select>
+        <br>
+
+        <select id="select_cidade_dono">
+            <option>Selecione uma cidade</option>
+        </select>
+
+
+
+         <button type="submit" onclick="mostrarPet(event)">Cadastrar</button>
+
+
+    </form>
+
+    <a href="../index.html">Voltar ao início</a>
+
+     <script src="../js/cadastro_pet.js"></script>
+</body>
+
+</html>
