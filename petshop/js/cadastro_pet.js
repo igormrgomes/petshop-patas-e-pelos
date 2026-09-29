@@ -1,27 +1,38 @@
 function mostrarPet(event) {
-  event.preventDefault() 
-  let especie = document.getElementById('especie_pet').value;
-let raca = document.getElementById('raca_pet').value;
-let nomePet = document.getElementById('nome_pet').value;
-let nomeDono = document.getElementById('dono_pet').value;
-let telefone = document.getElementById('telefone_dono').value;
+  const formulario = document.getElementById('form_cadastro_pet');
 
-let dadosPet = {NomeDono: nomeDono, NomePet: nomePet, Telefone: telefone, Raça: raca, 
-  Especie: especie };
+formulario.addEventListener('submit', async function(evento) {
+    evento.preventDefault();
 
+    // 1. Monte o objeto novoPet com TODOS os 10 campos reais do HTML
+   const novoPet = {
+    nome_pet: document.getElementById('nome_pet').value,
+    especie_pet: document.getElementById('especie_pet').value,
+    raca_pet: document.getElementById('raca_pet').value,
+    dono_pet: document.getElementById('dono_pet').value,
+    telefone_dono: document.getElementById('telefone_dono').value,
+    cep_dono: document.getElementById('cep_dono').value,
+    rua_dono: document.getElementById('rua_dono').value,
+    bairro_dono: document.getElementById('bairro_dono').value,
+    cidade_dono: document.getElementById('cidade_dono').value,
+    uf_dono: document.getElementById('uf_dono').value
+};
 
-  
- 
-  if ( telefone.length < 11) {
-    alert(  'Por favor, preencha o telefone corretamente (com DDD).');
-    return false
-  } 
+    // 2. Envie para o servidor no Render via fetch
+    try {
+        const resposta = await fetch(' https://petshop-servidor-igor-gomes.onrender.com/pets', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novoPet)
+        });
 
-  else{
-    localStorage.setItem('pet_cadastrado',  JSON.stringify(dadosPet))
-    alert(nomePet+ ' cadastrado com sucesso!')
-    return true
-  }
+        const dados = await resposta.json();
+        alert('Pet cadastrado com sucesso!');
+        formulario.reset();
+    } catch (erro) {
+        alert('Erro ao cadastrar o pet. Tente novamente.');
+    }
+});
   
 }
 
