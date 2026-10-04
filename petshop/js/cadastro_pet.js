@@ -1,37 +1,46 @@
+const ENDERECO_BACKEND = 'https://petshop-servidor-igor-gomes.onrender.com';
+
+let idEmEdicao = null;
+
+
 function mostrarPet(event) {
   const formulario = document.getElementById('form_cadastro_pet');
 
 formulario.addEventListener('submit', async function(evento) {
     evento.preventDefault();
 
-    // 1. Monte o objeto novoPet com TODOS os 10 campos reais do HTML
-   const novoPet = {
-    nome_pet: document.getElementById('nome_pet').value,
-    especie_pet: document.getElementById('especie_pet').value,
-    raca_pet: document.getElementById('raca_pet').value,
-    dono_pet: document.getElementById('dono_pet').value,
-    telefone_dono: document.getElementById('telefone_dono').value,
-    cep_dono: document.getElementById('cep_dono').value,
-    rua_dono: document.getElementById('rua_dono').value,
-    bairro_dono: document.getElementById('bairro_dono').value,
-    cidade_dono: document.getElementById('cidade_dono').value,
-    uf_dono: document.getElementById('uf_dono').value
-};
+    // 1. Monte o objeto novoPet (IGUAL AO SEU CÓDIGO ATUAL)
+    const novoPet = {
+        nome_pet: document.getElementById('nome_pet').value,
+        especie_pet: document.getElementById('especie_pet').value,
+        raca_pet: document.getElementById('raca_pet').value,
+        dono_pet: document.getElementById('dono_pet').value,
+        telefone_dono: document.getElementById('telefone_dono').value,
+        cep_dono: document.getElementById('cep_dono').value,
+        rua_dono: document.getElementById('rua_dono').value,
+        bairro_dono: document.getElementById('bairro_dono').value,
+        cidade_dono: document.getElementById('cidade_dono').value,
+        uf_dono: document.getElementById('uf_dono').value
+    };
 
-    // 2. Envie para o servidor no Render via fetch
-    try {
-        const resposta = await fetch(' https://petshop-servidor-igor-gomes.onrender.com/pets', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(novoPet)
-        });
+    // 2. ESTE É O NOVO BLOCO QUE SUBSTITUI O SEU TRY/CATCH:
+    let url = `${ENDERECO_BACKEND}/pets`;
+    let metodo = 'POST';
 
-        const dados = await resposta.json();
-        alert('Pet cadastrado com sucesso!');
-        formulario.reset();
-    } catch (erro) {
-        alert('Erro ao cadastrar o pet. Tente novamente.');
+    if (idEmEdicao !== null) {
+        url = `${ENDERECO_BACKEND}/pets/${idEmEdicao}`;
+        metodo = 'PUT';
     }
+
+    const resposta = await fetch(url, {
+        method: metodo,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(novoPet)
+    });
+
+    const dados = await resposta.json();
+    alert(idEmEdicao !== null ? 'Pet atualizado com sucesso!' : 'Pet cadastrado com sucesso!');
+    window.location.href = 'lista_pets.html';
 });
   
 }
@@ -98,5 +107,38 @@ async function carregarEstados(){
 
 }
 
+async function verificarModoEdicao() {
+    const parametros = new URLSearchParams(window.location.search);
+    const id = parametros.get('id');
+
+    if (id === null) {
+        return;
+    }
+
+    idEmEdicao = id;
+
+    const resposta = await fetch(`${ENDERECO_BACKEND}/pets/${id}`);
+    const pet = await resposta.json();
+
+    document.getElementById('nome_pet').value = pet.nome_pet;
+    document.getElementById('especie_pet').value = pet.especie_pet;
+    document.getElementById('raca_pet').value = pet.raca_pet;
+    document.getElementById('dono_pet').value = pet.dono_pet;
+    document.getElementById('telefone_dono').value = pet.telefone_dono;
+    document.getElementById('cep_dono').value = pet.cep_dono;
+    document.getElementById('rua_dono').value = pet.rua_dono;
+    document.getElementById('bairro_dono').value = pet.bairro_dono;
+    document.getElementById('cidade_dono').value = pet.cidade_dono;
+    document.getElementById('uf_dono').value = pet.uf_dono;
+
+    document.querySelector('#form_cadastro_pet button[type="submit"]').textContent = 'Salvar alterações';
+}
+
+
 carregarEstados();
+
+verificarModoEdicao();
+
+
+
 
