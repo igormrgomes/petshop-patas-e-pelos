@@ -23,7 +23,7 @@ formulario.addEventListener('submit', async function(evento) {
         uf_dono: document.getElementById('uf_dono').value
     };
 
-    // 2. ESTE É O NOVO BLOCO QUE SUBSTITUI O SEU TRY/CATCH:
+    // 2. Envio da requisição com fetch
     let url = `${ENDERECO_BACKEND}/pets`;
     let metodo = 'POST';
 
@@ -39,6 +39,14 @@ formulario.addEventListener('submit', async function(evento) {
     });
 
     const dados = await resposta.json();
+
+    // 🔴 3. NOVO TRECHO ADICIONADO AQUI:
+    if (!resposta.ok) {
+        alert('Não foi possível salvar: ' + dados.mensagem);
+        return;
+    }
+
+    // 🟢 4. Sucesso (só executa se resposta.ok for verdadeiro)
     alert(idEmEdicao !== null ? 'Pet atualizado com sucesso!' : 'Pet cadastrado com sucesso!');
     window.location.href = 'lista_pets.html';
 });
