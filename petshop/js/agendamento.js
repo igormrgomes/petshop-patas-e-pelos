@@ -1,84 +1,53 @@
-function atualizarPreco() {
-  var escolhido = document.getElementById('agendar_servico').value;
-  var preco = document.getElementById('valor_servico');
-  var sintomas = document.getElementById('sintomas')
-  
-  
-  if (escolhido == 'Banho') {
-    preco.value = 'R$ 50,00';
-  } else if (escolhido == 'Tosa') {
-    preco.value = 'R$ 60,00';
-  } else if (escolhido == 'Banho e tosa') {
-    preco.value = 'R$ 90,00';
-  } else if (escolhido == 'Consulta') {
-    preco.value = 'R$ 120,00';
-  } else {
-    preco.value = '';
-   
-  }
-   if (escolhido == "Consulta") {
-        sintomas.style.display = "block";
-        
-    } else {
-        sintomas.style.display = "none";
+const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
+
+async function carregarPetsNoSelect() {
+    const select = document.getElementById('pet_id');
+    select.innerHTML = '<option value="">Escolha um pet</option>';
+
+    const resposta = await fetch(`${ENDERECO_BACKEND}/pets`);
+    const pets = await resposta.json();
+
+    for (let i = 0; i < pets.length; i++) {
+        select.innerHTML += `<option value="${pets[i]._id}">${pets[i].nome_pet} (${pets[i].dono_pet})</option>`;
     }
 }
 
-function validarAgendamento(event) {
-  var nome = document.getElementById('nome').value;
-  var data = document.getElementById('data').value;
+const formulario = document.getElementById('form_agendamento');
 
-  
-  if (nome == '' || data == '' ) {
-    event.preventDefault(); 
-    alert('Por favor, preencha o nome e a data!'); 
-    return false
-  }
+formulario.addEventListener('submit', async function(evento) {
+    evento.preventDefault();
 
- else{
+    const novoAgendamento = {
+        pet_id: document.getElementById('pet_id').value,
+        servico: document.getElementById('servico').value,
+        data: document.getElementById('data').value,
+        hora: document.getElementById('hora').value,
+        observacoes: document.getElementById('observacoes').value
+    };
 
-    alert('Agendamento realizado com sucesso!')
-return true
+    try {
+        const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(novoAgendamento)
+        });
 
- }
- 
- 
-}
+        const dados = await resposta.json();
 
-function confirmarAgen(event){
-event.preventDefault()
+        if (!resposta.ok) {
+            alert('Não foi possível agendar: ' + dados.mensagem);
+            return;
+        }
 
-let pet = document.getElementById('agendar_pet').value;
-let servico = document.getElementById('agendar_servico').value;
-let data = document.getElementById('agendar_data').value;
-let hora = document.getElementById('agendar_hora').value;
-let obs= document.getElementById('agendar_obs').value
+        alert('Agendamento criado com sucesso!');
+        formulario.reset();
+    } catch (erro) {
+        alert('Erro de conexão. Tente novamente.');
+    }
+});
 
-if (pet === "") {
-    alert("Digite o nome do pet!");
-    return;
-}
+carregarPetsNoSelect();
 
-let novoAgendamento = {
-
-    pet: pet,
-    servico: servico,
-    data: data,
-    hora: hora,
-    obs: obs
-
-}
-
-
-
-let salvos = localStorage.getItem('agendamentos_petshop');
-
-let lista = salvos ? JSON.parse(salvos) : [];
-
-lista.push(novoAgendamento);
-
-localStorage.setItem('agendamentos_petshop', JSON.stringify(lista));
-}
 
 
   
