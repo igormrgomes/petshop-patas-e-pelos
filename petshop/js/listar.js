@@ -1,56 +1,35 @@
-let tabela = document.getElementById('tabela_corpo');
-let salvos = localStorage.getItem('agendamentos_petshop');
-let lista = salvos ? JSON.parse(salvos) : [];
+const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
 
-if (lista.length === 0) {
-    alert("Nenhum agendamento encontrado");
+async function carregarAgendamentos() {
+    const tabela = document.getElementById('tabela_agendamentos');
+    tabela.innerHTML = '';
+
+    const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos`);
+    const agendamentos = await resposta.json();
+
+    for (let i = 0; i < agendamentos.length; i++) {
+        tabela.innerHTML += `
+            <tr>
+                <td>${agendamentos[i].data}</td>
+                <td>${agendamentos[i].hora}</td>
+                <td>${agendamentos[i].nome_pet}</td>
+                <td>${agendamentos[i].servico}</td>
+                <td>${agendamentos[i].observacoes}</td>
+                <td><button onclick="excluirAgendamento('${agendamentos[i]._id}')">Excluir</button></td>
+            </tr>
+        `;
+    }
 }
 
-tabela.innerHTML = "";
-
-let faturamentoTotal = 0;
-
-lista.forEach(function(item, indice) {
-
-     if (item.servico == "Banho") {
-        faturamentoTotal += 50;
+async function excluirAgendamento(id) {
+    const confirmou = confirm('Excluir este agendamento?');
+    if (!confirmou) {
+        return;
     }
 
-    if (item.servico == "Tosa") {
-        faturamentoTotal += 60;
-    }
+    await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`, { method: 'DELETE' });
 
-    if (item.servico == "Banho e tosa") {
-        faturamentoTotal += 90;
-    }
-    
-
-    tabela.innerHTML += `
-        <tr>
-            <td>${item.pet}</td>
-            <td>${item.servico}</td>
-            <td>${item.data}</td>
-            <td>${item.hora}</td>
-            <td>${item.obs}</td>
-            <td>
-    <button onclick="deletarAgendamento(${indice})">Excluir</button>
-</td>
-        </tr>
-    `;
-
+    carregarAgendamentos();
 }
-);
 
-document.getElementById('faturamento_total').innerText =
-    "Faturamento total: R$ " + faturamentoTotal;
-
-    
-function deletarAgendamento(indice) {
-
-    lista.splice(indice, 1);
-
-    localStorage.setItem('agendamentos_petshop', JSON.stringify(lista));
-
-    location.reload();
-
-}
+carregarAgendamentos();
