@@ -1,4 +1,5 @@
-const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
+const ENDERECO_BACKEND = 'https://petshop-servidor-igor-gomes.onrender.com';
+let idEmEdicao = null;
 
 async function carregarPetsNoSelect() {
     const select = document.getElementById('pet_id');
@@ -10,6 +11,28 @@ async function carregarPetsNoSelect() {
     for (let i = 0; i < pets.length; i++) {
         select.innerHTML += `<option value="${pets[i]._id}">${pets[i].nome_pet} (${pets[i].dono_pet})</option>`;
     }
+}
+
+async function verificarModoEdicao() {
+    const parametros = new URLSearchParams(window.location.search);
+    const id = parametros.get('id');
+
+    if (id === null) {
+        return;
+    }
+
+    idEmEdicao = id;
+
+    const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`);
+    const agendamento = await resposta.json();
+
+    document.getElementById('pet_id').value = agendamento.pet_id;
+    document.getElementById('servico').value = agendamento.servico;
+    document.getElementById('data').value = agendamento.data;
+    document.getElementById('hora').value = agendamento.hora;
+    document.getElementById('observacoes').value = agendamento.observacoes || '';
+
+    document.querySelector('#form_agendamento button[type="submit"]').textContent = 'Salvar alterações';
 }
 
 const formulario = document.getElementById('form_agendamento');
@@ -25,9 +48,17 @@ formulario.addEventListener('submit', async function(evento) {
         observacoes: document.getElementById('observacoes').value
     };
 
+    let url = `${ENDERECO_BACKEND}/agendamentos`;
+    let metodo = 'POST';
+
+    if (idEmEdicao !== null) {
+        url = `${ENDERECO_BACKEND}/agendamentos/${idEmEdicao}`;
+        metodo = 'PUT';
+    }
+
     try {
-        const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos`, {
-            method: 'POST',
+        const resposta = await fetch(url, {
+            method: metodo,
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(novoAgendamento)
         });
@@ -35,18 +66,22 @@ formulario.addEventListener('submit', async function(evento) {
         const dados = await resposta.json();
 
         if (!resposta.ok) {
-            alert('Não foi possível agendar: ' + dados.mensagem);
+            alert('Não foi possível salvar: ' + dados.mensagem);
             return;
         }
 
-        alert('Agendamento criado com sucesso!');
-        formulario.reset();
+        alert(idEmEdicao !== null ? 'Agendamento atualizado!' : 'Agendamento criado com sucesso!');
+        window.location.href = 'listar_agendamentos.html';
     } catch (erro) {
         alert('Erro de conexão. Tente novamente.');
     }
 });
+async function iniciarPagina() {
+    await carregarPetsNoSelect();   // 1º Carrega o cardápio de pets
+    await verificarModoEdicao();    // 2º Preenche os campos do agendamento
+}
 
-carregarPetsNoSelect();
+iniciarPagina();
 
 
 

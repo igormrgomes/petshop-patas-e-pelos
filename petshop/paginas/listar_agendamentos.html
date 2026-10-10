@@ -14,6 +14,10 @@
             <th>Data</th><th>Hora</th><th>Pet</th><th>Serviço</th><th>Observações</th><th>Ações</th>
         </tr>
     </thead>
+    <label>Dia</label>
+<input type="date" id="filtro_data">
+<button onclick="filtrarPorDia()">Ver agenda do dia</button>
+<button onclick="limparFiltro()">Ver todos</button>
     <tbody id="tabela_agendamentos"></tbody>
 </table>
 

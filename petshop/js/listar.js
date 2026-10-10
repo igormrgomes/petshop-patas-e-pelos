@@ -1,11 +1,19 @@
-const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
-
-async function carregarAgendamentos() {
+async function carregarAgendamentos(data) {
     const tabela = document.getElementById('tabela_agendamentos');
     tabela.innerHTML = '';
 
-    const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos`);
+    let url = `${ENDERECO_BACKEND}/agendamentos`;
+    if (data) {
+        url = `${ENDERECO_BACKEND}/agendamentos?data=${data}`;
+    }
+
+    const resposta = await fetch(url);
     const agendamentos = await resposta.json();
+
+    if (agendamentos.length === 0) {
+        tabela.innerHTML = '<tr><td colspan="6">Nenhum agendamento.</td></tr>';
+        return;
+    }
 
     for (let i = 0; i < agendamentos.length; i++) {
         tabela.innerHTML += `
@@ -14,21 +22,23 @@ async function carregarAgendamentos() {
                 <td>${agendamentos[i].hora}</td>
                 <td>${agendamentos[i].nome_pet}</td>
                 <td>${agendamentos[i].servico}</td>
-                <td>${agendamentos[i].observacoes}</td>
-                <td><button onclick="excluirAgendamento('${agendamentos[i]._id}')">Excluir</button></td>
+                <td>${agendamentos[i].observacoes || ''}</td>
+                <td>
+                    <button onclick="editarAgendamento('${agendamentos[i]._id}')">Editar</button>
+                    <button onclick="excluirAgendamento('${agendamentos[i]._id}')">Excluir</button>
+                </td>
             </tr>
         `;
     }
 }
 
-async function excluirAgendamento(id) {
-    const confirmou = confirm('Excluir este agendamento?');
-    if (!confirmou) {
-        return;
-    }
+function filtrarPorDia() {
+    const data = document.getElementById('filtro_data').value;
+    carregarAgendamentos(data);
+}
 
-    await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`, { method: 'DELETE' });
-
+function limparFiltro() {
+    document.getElementById('filtro_data').value = '';
     carregarAgendamentos();
 }
 
