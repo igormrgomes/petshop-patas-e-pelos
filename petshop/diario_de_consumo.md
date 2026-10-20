@@ -12,6 +12,7 @@ Resposta completa e extremamente precisa da IA
 depois:  0.4% ( 1 pedido realizado)
 
 13.2
+antes: 0.4%
 13.3
 13.4
 13.5

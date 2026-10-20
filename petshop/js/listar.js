@@ -1,3 +1,5 @@
+const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
+
 async function carregarAgendamentos(data) {
     const tabela = document.getElementById('tabela_agendamentos');
     tabela.innerHTML = '';
@@ -16,18 +18,18 @@ async function carregarAgendamentos(data) {
     }
 
     for (let i = 0; i < agendamentos.length; i++) {
-        tabela.innerHTML += `
-            <tr>
-                <td>${agendamentos[i].data}</td>
-                <td>${agendamentos[i].hora}</td>
-                <td>${agendamentos[i].nome_pet}</td>
-                <td>${agendamentos[i].servico}</td>
-                <td>${agendamentos[i].observacoes || ''}</td>
-                <td>
-                    <button onclick="editarAgendamento('${agendamentos[i]._id}')">Editar</button>
-                    <button onclick="excluirAgendamento('${agendamentos[i]._id}')">Excluir</button>
-                </td>
-            </tr>
+       tabela.innerHTML += `
+    <tr>
+        <td>${agendamentos[i].data}</td>
+        <td>${agendamentos[i].hora}</td>
+        <td>${agendamentos[i].nome_pet}</td>
+        <td>${agendamentos[i].servico}</td>
+        <td>${agendamentos[i].observacoes || ''}</td>
+        <td>
+            <button onclick="editarAgendamento('${agendamentos[i]._id}')">Editar</button>
+            <button onclick="excluirAgendamento('${agendamentos[i]._id}')">Excluir</button>
+        </td>
+    </tr>
         `;
     }
 }
