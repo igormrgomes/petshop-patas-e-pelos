@@ -39,4 +39,16 @@ function editarPet(id) {
     window.location.href = `cadastro_pet.html?id=${id}`;
 }
 
-carregarPets();
+function filtrarPets() {
+    const filtro = document.getElementById('filtro_nome_pet').value.toLowerCase();
+    const linhas = document.querySelectorAll('#tabela_pets tr');
+
+    linhas.forEach((linha) => {
+        const nomePet = linha.cells[0].textContent.toLowerCase();
+        linha.hidden = !nomePet.includes(filtro);
+    });
+}
+
+document.getElementById('filtro_nome_pet').addEventListener('input', filtrarPets);
+
+carregarPets().then(filtrarPets);

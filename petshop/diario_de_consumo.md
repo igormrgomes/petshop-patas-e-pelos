@@ -9,10 +9,13 @@ Observação (o que a IA acertou / errou / o que eu faria diferente)
 13.1
 antes: 0%
 Resposta completa e extremamente precisa da IA
-depois:  0.4% ( 1 pedido realizado)
+depois:  0.20% ( 1 pedido realizado)
 
 13.2
-antes: 0.4%
+antes: 0.20%
+Explicação muito precisa da IA
+depois: 0.25%  ( 1 pedido realizado )
+
 13.3
 13.4
 13.5
