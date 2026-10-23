@@ -34,6 +34,33 @@ async function carregarAgendamentos(data) {
     }
 }
 
+function editarAgendamento(id) {
+    window.location.href = `agendar_servico.html?id=${encodeURIComponent(id)}`;
+}
+
+async function excluirAgendamento(id) {
+    const confirmou = confirm('Excluir este agendamento?');
+    if (!confirmou) {
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`, {
+            method: 'DELETE'
+        });
+
+        if (!resposta.ok) {
+            alert('Não foi possível excluir o agendamento.');
+            return;
+        }
+
+        const data = document.getElementById('filtro_data').value;
+        await carregarAgendamentos(data);
+    } catch (erro) {
+        alert('Erro de conexão. Tente novamente.');
+    }
+}
+
 function filtrarPorDia() {
     const data = document.getElementById('filtro_data').value;
     carregarAgendamentos(data);

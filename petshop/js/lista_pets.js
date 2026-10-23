@@ -30,9 +30,15 @@ async function excluirPet(id) {
         return;
     }
 
-    await fetch(`${ENDERECO_BACKEND}/pets/${id}`, { method: 'DELETE' });
+    const resposta = await fetch(`${ENDERECO_BACKEND}/pets/${id}`, { method: 'DELETE' });
+    const dados = await resposta.json();
 
-    carregarPets();
+    if (!resposta.ok) {
+        alert(dados.mensagem);
+        return;
+    }
+
+    await carregarPets();
 }
 
 function editarPet(id) {

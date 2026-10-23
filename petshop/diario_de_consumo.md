@@ -17,6 +17,10 @@ Explicação muito precisa da IA
 depois: 0.25%  ( 1 pedido realizado )
 
 13.3
+antes: 0.25%
+A IA respeitou todas as restrições, usou o evento input e oculta as linhas com hidden sem perder os botões
+depois: 0.45%
+
 13.4
 13.5
 TOTAL DO MÓDULO
