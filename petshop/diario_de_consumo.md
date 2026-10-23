@@ -18,10 +18,14 @@ depois: 0.25%  ( 1 pedido realizado )
 
 13.3
 antes: 0.25%
-A IA respeitou todas as restrições, usou o evento input e oculta as linhas com hidden sem perder os botões
+A IA respeitou todas as restrições, usou o evento input e oculta as linhas com hidden sem perder os botões ( 1 pedido)
 depois: 0.45%
 
 13.4
+antes: 0.45%
+A IA acertou a busca com pet_id como texto no backend e tratou resposta.ok no frontend. Testado com pet agendado, que bloqueou e exibiu o alert com sucesso. (2 pedidos)
+depois: 1%
+
 13.5
 TOTAL DO MÓDULO
 —
