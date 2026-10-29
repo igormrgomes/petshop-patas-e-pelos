@@ -27,14 +27,35 @@ A IA acertou a busca com pet_id como texto no backend e tratou resposta.ok no fr
 depois: 1%
 
 13.5
-TOTAL DO MÓDULO
+antes: 1%
+IA precisa e detalhista ( 2 pedidos)
+depois: 1,5%
+
+
+TOTAL DO MÓDULO: 1,5%
+
 —
 Balanço (preencher na Aula 13.5)
 Em que aula gastei mais, e por quê?
---------------------------------------------------------------------------------
+13.4 pq foram mais alteraçõe e pedidos
+
 O que eu faria diferente?
---------------------------------------------------------------------------------
+nada
+
 Uma coisa que a IA errou e eu peguei:
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
+cometeu um erro silencioso na aula 13.4
+
 Este arquivo faz parte do projeto petshop e é commitado. Ele não contém segredos — só números e observações.
+
+
+Módulo 14
+
+14.1
+antes: 1,5%
+sem pedidos para a IA
+depois: 1,5%
+
+14.2
+antes 1,5%
+IA precisa e funcional ( 1 pedido)
+depois: 2%
