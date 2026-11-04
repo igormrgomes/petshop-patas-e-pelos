@@ -5,6 +5,9 @@ async function carregarPets() {
     tabela.innerHTML = '';
 
     const resposta = await fetch(`${ENDERECO_BACKEND}/pets`);
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const pets = await resposta.json();
 
     for (let i = 0; i < pets.length; i++) {
@@ -26,12 +29,22 @@ async function carregarPets() {
 }
 
 async function excluirPet(id) {
+    if (!exigirAutenticacao()) {
+        return;
+    }
+
     const confirmou = confirm('Tem certeza que deseja excluir este pet?');
     if (!confirmou) {
         return;
     }
 
-    const resposta = await fetch(`${ENDERECO_BACKEND}/pets/${id}`, { method: 'DELETE' });
+    const resposta = await fetch(`${ENDERECO_BACKEND}/pets/${id}`, {
+        method: 'DELETE',
+        headers: cabecalhosComToken()
+    });
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const dados = await resposta.json();
 
     if (!resposta.ok) {

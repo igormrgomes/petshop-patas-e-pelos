@@ -3,13 +3,13 @@ const ENDERECO_BACKEND = 'https://petshop-servidor-igor-gomes.onrender.com';
 let idEmEdicao = null;
 
 
-function mostrarPet(event) {
-  const formulario = document.getElementById('form_cadastro_pet');
-
-formulario.addEventListener('submit', async function(evento) {
+document.getElementById('form_cadastro_pet').addEventListener('submit', async function(evento) {
     evento.preventDefault();
 
-    // 1. Monte o objeto novoPet (IGUAL AO SEU CÓDIGO ATUAL)
+    if (!exigirAutenticacao()) {
+        return;
+    }
+
     const novoPet = {
         nome_pet: document.getElementById('nome_pet').value,
         especie_pet: document.getElementById('especie_pet').value,
@@ -23,7 +23,6 @@ formulario.addEventListener('submit', async function(evento) {
         uf_dono: document.getElementById('uf_dono').value
     };
 
-    // 2. Envio da requisição com fetch
     let url = `${ENDERECO_BACKEND}/pets`;
     let metodo = 'POST';
 
@@ -34,26 +33,27 @@ formulario.addEventListener('submit', async function(evento) {
 
     const resposta = await fetch(url, {
         method: metodo,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            ...cabecalhosComToken()
+        },
         body: JSON.stringify(novoPet)
     });
 
+    if (tratarResposta401(resposta)) {
+        return;
+    }
+
     const dados = await resposta.json();
 
-    // 🔴 3. NOVO TRECHO ADICIONADO AQUI:
     if (!resposta.ok) {
         alert('Não foi possível salvar: ' + dados.mensagem);
         return;
     }
 
-    // 🟢 4. Sucesso (só executa se resposta.ok for verdadeiro)
     alert(idEmEdicao !== null ? 'Pet atualizado com sucesso!' : 'Pet cadastrado com sucesso!');
     window.location.href = 'lista_pets.html';
 });
-  
-}
-
-document.getElementById('form_cadastro_pet').addEventListener('submit', mostrarPet);
 
  async function consultarCEP(numeroCEP){
 
@@ -126,6 +126,9 @@ async function verificarModoEdicao() {
     idEmEdicao = id;
 
     const resposta = await fetch(`${ENDERECO_BACKEND}/pets/${id}`);
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const pet = await resposta.json();
 
     document.getElementById('nome_pet').value = pet.nome_pet;
@@ -146,7 +149,6 @@ async function verificarModoEdicao() {
 carregarEstados();
 
 verificarModoEdicao();
-
 
 
 

@@ -6,6 +6,9 @@ async function carregarPetsNoSelect() {
     select.innerHTML = '<option value="">Escolha um pet</option>';
 
     const resposta = await fetch(`${ENDERECO_BACKEND}/pets`);
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const pets = await resposta.json();
 
     for (let i = 0; i < pets.length; i++) {
@@ -24,6 +27,9 @@ async function verificarModoEdicao() {
     idEmEdicao = id;
 
     const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`);
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const agendamento = await resposta.json();
 
     document.getElementById('pet_id').value = agendamento.pet_id;
@@ -39,6 +45,10 @@ const formulario = document.getElementById('form_agendamento');
 
 formulario.addEventListener('submit', async function(evento) {
     evento.preventDefault();
+
+    if (!exigirAutenticacao()) {
+        return;
+    }
 
     const novoAgendamento = {
         pet_id: document.getElementById('pet_id').value,
@@ -59,9 +69,16 @@ formulario.addEventListener('submit', async function(evento) {
     try {
         const resposta = await fetch(url, {
             method: metodo,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...cabecalhosComToken()
+            },
             body: JSON.stringify(novoAgendamento)
         });
+
+        if (tratarResposta401(resposta)) {
+            return;
+        }
 
         const dados = await resposta.json();
 

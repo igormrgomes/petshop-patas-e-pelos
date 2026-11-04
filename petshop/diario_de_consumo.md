@@ -59,3 +59,12 @@ depois: 1,5%
 antes 1,5%
 IA precisa e funcional ( 1 pedido)
 depois: 2%
+
+14.3
+antes: 2%
+Tudo certo com a IA ( 1 pedido)
+depois: 2.5%
+
+
+14.4
+antes 2.5%

@@ -1,4 +1,4 @@
-const ENDERECO_BACKEND = ' https://petshop-servidor-igor-gomes.onrender.com';
+const ENDERECO_BACKEND = 'https://petshop-servidor-igor-gomes.onrender.com';
 
 async function carregarAgendamentos(data) {
     const tabela = document.getElementById('tabela_agendamentos');
@@ -10,6 +10,9 @@ async function carregarAgendamentos(data) {
     }
 
     const resposta = await fetch(url);
+    if (tratarResposta401(resposta)) {
+        return;
+    }
     const agendamentos = await resposta.json();
 
     if (agendamentos.length === 0) {
@@ -39,6 +42,10 @@ function editarAgendamento(id) {
 }
 
 async function excluirAgendamento(id) {
+    if (!exigirAutenticacao()) {
+        return;
+    }
+
     const confirmou = confirm('Excluir este agendamento?');
     if (!confirmou) {
         return;
@@ -46,8 +53,13 @@ async function excluirAgendamento(id) {
 
     try {
         const resposta = await fetch(`${ENDERECO_BACKEND}/agendamentos/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: cabecalhosComToken()
         });
+
+        if (tratarResposta401(resposta)) {
+            return;
+        }
 
         if (!resposta.ok) {
             alert('Não foi possível excluir o agendamento.');
