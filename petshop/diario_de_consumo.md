@@ -68,3 +68,7 @@ depois: 2.5%
 
 14.4
 antes 2.5%
+IA certeira sem problemas ( 2 pedidos)
+depois: 4%
+
+15.5
